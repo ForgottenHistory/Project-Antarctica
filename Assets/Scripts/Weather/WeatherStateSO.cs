@@ -43,6 +43,18 @@ public class WeatherStateSO : ScriptableObject
     public Color cloudTint = Color.white;      // Correct
     public float exposureCompensation = 0f;    // Changed from cloudExposureCompensation
     
+    [Tooltip("Opacity multiplier for the red channel."), Range(0.0f,1.0f)]
+    public float opacityR = 1.0f;
+
+    [Tooltip("Opacity multiplier for the green channel."), Range(0.0f,1.0f)]
+    public float opacityG = 0.0f;
+
+    [Tooltip("Opacity multiplier for the blue channel."), Range(0.0f,1.0f)]
+    public float opacityB = 0.0f;
+
+    [Tooltip("Opacity multiplier for the alpha channel."), Range(0.0f,1.0f)]
+    public float opacityA = 0.0f;
+
     [Header("Cloud Wind")]
     public float windOrientation = 100f;       // Correct
     public float windSpeed = 100f;             // Correct

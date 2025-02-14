@@ -32,17 +32,25 @@ public class CloudInterpolator : WeatherInterpolator
         cloudLayer.layerA.tint.value = Color.Lerp(from.cloudTint, to.cloudTint, t);
         cloudLayer.layerA.exposure.value = Mathf.Lerp(from.exposureCompensation, to.exposureCompensation, t);
 
+        // Opacity settings
+        cloudLayer.layerA.opacityR.value = Mathf.Lerp(from.opacityR, to.opacityR, t);
+        cloudLayer.layerA.opacityG.value = Mathf.Lerp(from.opacityG, to.opacityG, t);
+        cloudLayer.layerA.opacityB.value = Mathf.Lerp(from.opacityB, to.opacityB, t);
+        cloudLayer.layerA.opacityA.value = Mathf.Lerp(from.opacityA, to.opacityA, t);
+        
         // Wind settings
-        cloudLayer.layerA.scrollOrientation.Override(new WindParameter.WindParamaterValue {
+        cloudLayer.layerA.scrollOrientation.Override(new WindParameter.WindParamaterValue
+        {
             mode = WindParameter.WindOverrideMode.Custom,
             customValue = Mathf.Lerp(from.windOrientation, to.windOrientation, t)
         });
 
-        cloudLayer.layerA.scrollSpeed.Override(new WindParameter.WindParamaterValue {
+        cloudLayer.layerA.scrollSpeed.Override(new WindParameter.WindParamaterValue
+        {
             mode = WindParameter.WindOverrideMode.Custom,
             customValue = Mathf.Lerp(from.windSpeed, to.windSpeed, t)
         });
-        
+
         // Raymarching settings
         cloudLayer.layerA.lighting.value = to.enableRaymarching;
         cloudLayer.layerA.steps.value = Mathf.RoundToInt(Mathf.Lerp(from.numPrimarySteps, to.numPrimarySteps, t));

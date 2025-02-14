@@ -17,38 +17,41 @@ MonoBehaviour:
   enableVolumetricFog: 1
   meanFreePath: 20
   baseHeight: 0
-  maxHeight: 100
-  maxFogDistance: 500
-  tint: {r: 1, g: 1, b: 1, a: 1}
+  maximumHeight: 100
+  maxDistanceInMeters: 500
+  albedo: {r: 1, g: 1, b: 1, a: 1}
   mipFogNear: 0
   mipFogFar: 1000
   mipFogMaxMip: 0.5
-  albedo: 1
-  globalDimmer: 1
-  volumetricFogDistance: 64
+  globalLightProbeDimmer: 1
+  depthExtent: 64
   sliceDistributionUniformity: 0.75
   volumetricFogBudget: 0.5
   resolutionDepthRatio: 0.5
   directionalLightsOnly: 1
   anisotropy: 0
-  multipleScatteringIntensity: 0
+  multiScattering: 0
   enableClouds: 1
-  cloudOpacity: 1
+  opacity: 1
   upperHemisphereOnly: 1
-  cloudAltitude: 2000
-  cloudRotation: 0
+  altitude: 2000
+  rotation: 0
   cloudTint: {r: 0, g: 0, b: 0, a: 1}
-  cloudExposureCompensation: 0
+  exposureCompensation: 0
+  opacityR: 1
+  opacityG: 1
+  opacityB: 1
+  opacityA: 1
   windOrientation: 100
   windSpeed: 100
   enableRaymarching: 1
-  raymarchingSteps: 6
+  numPrimarySteps: 6
   raymarchingDensity: 0.5
-  ambientProbeDimmer: 1
-  enableCloudShadows: 1
+  ambientDimmer: 1
+  enableShadows: 1
   shadowMultiplier: 1
   shadowTint: {r: 0, g: 0, b: 0, a: 1}
-  shadowSize: 500
+  shadowResolution: 500
   dayTimeProbability: 0.5
   nightTimeProbability: 1
   minDuration: 30
