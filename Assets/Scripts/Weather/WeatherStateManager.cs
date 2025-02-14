@@ -4,6 +4,7 @@ using UnityEngine.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 
+[RequireComponent(typeof(WeatherTransitionHandler))]
 public class WeatherStateManager : MonoBehaviour
 {
     // Public properties for debug and external access
@@ -13,19 +14,20 @@ public class WeatherStateManager : MonoBehaviour
     public bool RandomWeatherEnabled => enableRandomWeather;
     public IReadOnlyList<WeatherStateSO> AvailableStates => availableWeatherStates;
     public float CurrentWeatherTimer => weatherTimer;
-    
+
     [Header("References")]
     [SerializeField] private VolumeProfile volumeProfile;
     [SerializeField] private SunController sunController;
-    
+
     [Header("Weather States")]
     [SerializeField] private List<WeatherStateSO> availableWeatherStates;
     [SerializeField] private WeatherStateSO defaultState;
-    
+
     [Header("System Settings")]
     [SerializeField] private bool enableRandomWeather = true;
     [SerializeField] private float weatherCheckInterval = 60f;
-    
+    private WeatherTransitionHandler transitionHandler;
+    private WeatherStateSnapshot currentSnapshot;
     public WeatherChangeEvent onWeatherStateChanged;
     public WeatherChangeEvent onWeatherStateStartTransition;
     public TimeOfDayEvent onTimeOfDayChanged;
@@ -51,7 +53,7 @@ public class WeatherStateManager : MonoBehaviour
         // Initialize interpolators
         fogInterpolator = new FogInterpolator(volumeProfile);
         cloudInterpolator = new CloudInterpolator(volumeProfile);
-
+        transitionHandler = GetComponent<WeatherTransitionHandler>();
 
         ValidateWeatherStates();
     }
@@ -87,6 +89,7 @@ public class WeatherStateManager : MonoBehaviour
     {
         currentState = defaultState;
         targetState = defaultState;
+        currentSnapshot = WeatherStateSnapshot.CreateFromState(defaultState);
         ApplyWeatherState(defaultState);
         weatherTimer = Random.Range(defaultState.minDuration, defaultState.maxDuration);
     }
@@ -94,7 +97,7 @@ public class WeatherStateManager : MonoBehaviour
     private void Update()
     {
         if (!enabled) return;
-        
+
         UpdateTimeOfDay();
         if (enableRandomWeather)
         {
@@ -107,7 +110,7 @@ public class WeatherStateManager : MonoBehaviour
         if (sunController == null) return;
 
         float timeOfDay = sunController.GetCurrentTime();
-        
+
         if (Mathf.Abs(timeOfDay - lastTimeOfDay) >= 0.1f)
         {
             onTimeOfDayChanged.Invoke(timeOfDay);
@@ -118,31 +121,40 @@ public class WeatherStateManager : MonoBehaviour
 
     private void UpdateFogSettings(float timeOfDay)
     {
-        if (currentState == null) return;
+        if (currentSnapshot == null) return;
         float dayNightFactor = GetDayNightFactor(timeOfDay);
-        fogInterpolator.UpdateTimeOfDay(currentState, dayNightFactor);
+        fogInterpolator.UpdateTimeOfDay(currentSnapshot, dayNightFactor);
     }
 
     private void UpdateWeatherSystem()
     {
         weatherTimer -= Time.deltaTime;
-        
+
         if (weatherTimer <= 0)
         {
             SelectNewWeatherState();
         }
 
-        if (currentState != targetState)
+        if (transitionHandler.IsTransitioning)
         {
-            HandleWeatherTransition();
+            var snapshot = transitionHandler.UpdateTransition(Time.deltaTime);
+            ApplyWeatherSnapshot(snapshot);
         }
+    }
+    private void ApplyWeatherSnapshot(WeatherStateSnapshot snapshot)
+    {
+        if (snapshot == null) return;
+
+        fogInterpolator?.ApplySnapshot(snapshot);
+        cloudInterpolator?.ApplySnapshot(snapshot);
+        currentSnapshot = snapshot;
     }
 
     private void SelectNewWeatherState()
     {
         float timeOfDay = sunController.GetCurrentTime();
         bool isDay = IsDay(timeOfDay);
-        
+
         var weightedStates = availableWeatherStates
             .Select(state => new
             {
@@ -208,15 +220,16 @@ public class WeatherStateManager : MonoBehaviour
     {
         if (state == null) return;
 
-        fogInterpolator?.ApplyImmediate(state);
-        cloudInterpolator?.ApplyImmediate(state);
+        var snapshot = WeatherStateSnapshot.CreateFromState(state);
+        ApplyWeatherSnapshot(snapshot);
     }
+
 
     private float GetDayNightFactor(float timeOfDay)
     {
         if (timeOfDay > 12f)
             timeOfDay = 24f - timeOfDay;
-        
+
         return Mathf.Clamp01((timeOfDay - 3f) / 6f);
     }
 
@@ -229,21 +242,30 @@ public class WeatherStateManager : MonoBehaviour
     public void SetTargetWeather(WeatherStateSO newState)
     {
         if (newState == null) return;
-        
+
         var oldState = targetState;
         targetState = newState;
-        transitionTimer = 0f;
+
+        if (transitionHandler.IsTransitioning)
+        {
+            transitionHandler.InterruptTransition(newState, newState.transitionDuration);
+        }
+        else
+        {
+            transitionHandler.StartTransition(currentSnapshot, newState, newState.transitionDuration);
+        }
+
         onWeatherStateStartTransition.Invoke(oldState, targetState);
     }
 
     public void ForceWeatherState(WeatherStateSO state)
     {
         if (state == null) return;
-        
+
         var oldState = currentState;
         currentState = state;
         targetState = state;
-        transitionTimer = 0f;
+
         ApplyWeatherState(state);
         onWeatherStateChanged.Invoke(oldState, state);
     }
@@ -270,8 +292,8 @@ public class WeatherStateManager : MonoBehaviour
         if (currentState != targetState)
         {
             targetState = currentState;
-            transitionTimer = 0f;
             ApplyWeatherState(currentState);
+            transitionHandler.StartTransition(currentSnapshot, currentState, 0f);
         }
     }
 }

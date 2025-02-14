@@ -3,7 +3,7 @@ using UnityEngine.Rendering;
 
 public abstract class WeatherInterpolator
 {
-    protected bool IsValid { get; private set; }
+    public bool IsValid { get; private set; }
 
     protected WeatherInterpolator(VolumeProfile profile)
     {

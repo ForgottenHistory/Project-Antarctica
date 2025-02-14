@@ -13,24 +13,24 @@ public class FogInterpolator : WeatherInterpolator
         return profile.TryGet(out fog);
     }
 
-    public override void Interpolate(WeatherStateSO from, WeatherStateSO to, float t)
+    public void ApplySnapshot(WeatherStateSnapshot snapshot)
     {
-        if (!IsValid || from == null || to == null) return;
+        if (!IsValid || snapshot == null) return;
 
         // Basic fog settings
-        fog.active = to.enableVolumetricFog;  // Changed from enableVolumetricFog.value
+        fog.active = snapshot.enableVolumetricFog;
         
         // Fog attenuation
-        fog.meanFreePath.value = Mathf.Lerp(from.meanFreePath, to.meanFreePath, t);
-        fog.baseHeight.value = Mathf.Lerp(from.baseHeight, to.baseHeight, t);
-        fog.maximumHeight.value = Mathf.Lerp(from.maximumHeight, to.maximumHeight, t);
+        fog.meanFreePath.value = snapshot.meanFreePath;
+        fog.baseHeight.value = snapshot.baseHeight;
+        fog.maximumHeight.value = snapshot.maximumHeight;
         
         // Fog color and mip settings
-        fog.albedo.value = Color.Lerp(from.albedo, to.albedo, t);  // Changed from tint to albedo
-        fog.mipFogNear.value = Mathf.Lerp(from.mipFogNear, to.mipFogNear, t);
-        fog.mipFogFar.value = Mathf.Lerp(from.mipFogFar, to.mipFogFar, t);
-        fog.mipFogMaxMip.value = Mathf.Lerp(from.mipFogMaxMip, to.mipFogMaxMip, t);
-        
+        fog.albedo.value = snapshot.albedo;
+        fog.mipFogNear.value = snapshot.mipFogNear;
+        fog.mipFogFar.value = snapshot.mipFogFar;
+        fog.mipFogMaxMip.value = snapshot.mipFogMaxMip;
+
         // Volumetric fog settings
         /**
         fog.globalLightProbeDimmer.value = Mathf.Lerp(from.globalLightProbeDimmer, to.globalLightProbeDimmer, t);
@@ -43,25 +43,38 @@ public class FogInterpolator : WeatherInterpolator
         */
     }
 
+    public override void Interpolate(WeatherStateSO from, WeatherStateSO to, float t)
+    {
+        if (!IsValid || from == null || to == null) return;
+        
+        var snapshot = WeatherStateSnapshot.Lerp(
+            WeatherStateSnapshot.CreateFromState(from),
+            WeatherStateSnapshot.CreateFromState(to),
+            t
+        );
+        
+        ApplySnapshot(snapshot);
+    }
+
     public override void ApplyImmediate(WeatherStateSO state)
     {
         if (!IsValid || state == null) return;
-        Interpolate(state, state, 1f);
+        ApplySnapshot(WeatherStateSnapshot.CreateFromState(state));
     }
 
-    public void UpdateTimeOfDay(WeatherStateSO currentState, float dayNightFactor)
+    public void UpdateTimeOfDay(WeatherStateSnapshot snapshot, float dayNightFactor)
     {
-        if (!IsValid || currentState == null) return;
+        if (!IsValid || snapshot == null) return;
 
         fog.meanFreePath.value = Mathf.Lerp(
-            currentState.meanFreePath * 0.5f,  // Reduced visibility at night
-            currentState.meanFreePath,
+            snapshot.meanFreePath * 0.5f,  // Reduced visibility at night
+            snapshot.meanFreePath,
             dayNightFactor
         );
         
         fog.maximumHeight.value = Mathf.Lerp(
-            currentState.maximumHeight * 0.75f,
-            currentState.maximumHeight,
+            snapshot.maximumHeight * 0.75f,
+            snapshot.maximumHeight,
             dayNightFactor
         );
     }
