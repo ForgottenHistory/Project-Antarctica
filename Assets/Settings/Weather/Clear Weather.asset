@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8ed5cabb498e6c479054d9860f8122c, type: 3}
+  m_Name: Clear Weather
+  m_EditorClassIdentifier: 
+  stateName: Clear Weather
+  transitionDuration: 5
+  enableVolumetricFog: 0
+  meanFreePath: 1000
+  baseHeight: 0
+  maxHeight: 100
+  maxFogDistance: 500
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  mipFogNear: 0
+  mipFogFar: 1000
+  mipFogMaxMip: 0.5
+  albedo: 1
+  globalDimmer: 1
+  volumetricFogDistance: 64
+  sliceDistributionUniformity: 0.75
+  volumetricFogBudget: 0.5
+  resolutionDepthRatio: 0.5
+  directionalLightsOnly: 1
+  anisotropy: 0
+  multipleScatteringIntensity: 0
+  enableClouds: 1
+  cloudOpacity: 1
+  upperHemisphereOnly: 1
+  cloudAltitude: 2000
+  cloudRotation: 0
+  cloudTint: {r: 1, g: 1, b: 1, a: 1}
+  cloudExposureCompensation: 0
+  windOrientation: 100
+  windSpeed: 100
+  enableRaymarching: 1
+  raymarchingSteps: 6
+  raymarchingDensity: 0.5
+  ambientProbeDimmer: 1
+  enableCloudShadows: 1
+  shadowMultiplier: 1
+  shadowTint: {r: 0, g: 0, b: 0, a: 1}
+  shadowSize: 500
+  dayTimeProbability: 1
+  nightTimeProbability: 0
+  minDuration: 30
+  maxDuration: 60

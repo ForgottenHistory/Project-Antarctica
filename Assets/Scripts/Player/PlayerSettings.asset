@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4689946d18dc9948b7c8234df9077ca, type: 3}
+  m_Name: PlayerSettings
+  m_EditorClassIdentifier: 
+  walkSpeed: 5
+  runSpeed: 8
+  sneakSpeed: 2.5
+  jumpHeight: 2
+  gravity: -9.81
+  canSprint: 1
+  canSneak: 1
+  useSpeedRamping: 1
+  accelerationTime: 0.5
+  decelerationTime: 0.3
+  speedRampCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxStamina: 100
+  staminaDepletionRate: 20
+  staminaRegenerationRate: 10
+  staminaFullRechargeTime: 2
+  staminaRechargeCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  lookSpeedX: 2
+  lookSpeedY: 2
+  upperLookLimit: -60
+  lowerLookLimit: 60
+  groundCheckDistance: 0.3
+  canJump: 1
+  normalStepInterval: 0.5
+  runStepInterval: 0.3
+  sneakStepInterval: 0.7
+  sneakVolumeMultiplier: 0.5
+  runVolumeMultiplier: 1.5
+  enableHeadBob: 1
+  walkBobSpeed: 14
+  walkBobAmount: 0.05
+  runBobSpeed: 18
+  runBobAmount: 0.1
+  sneakBobSpeed: 10
+  sneakBobAmount: 0.025
+  bobSmoothing: 10
+  bobResetSpeed: 5
+  verticalOffset: 0
