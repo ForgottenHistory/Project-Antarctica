@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8ed5cabb498e6c479054d9860f8122c, type: 3}
-  m_Name: Clear Weather
+  m_Name: Few Clouds
   m_EditorClassIdentifier: 
-  stateName: Clear Weather
+  stateName: Few Clouds
   transitionDuration: 5
   fog:
     enableVolumetricFog: 1
@@ -40,7 +40,7 @@ MonoBehaviour:
     rotation: 0
     cloudTint: {r: 1, g: 1, b: 1, a: 1}
     exposureCompensation: 0
-    opacityR: 0
+    opacityR: 1
     opacityG: 0
     opacityB: 0
     opacityA: 0

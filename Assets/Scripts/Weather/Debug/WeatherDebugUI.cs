@@ -143,8 +143,6 @@ public class WeatherDebugUI : MonoBehaviour
             if (currentState != null)
             {
                 GUILayout.Label($"Current State: {currentState.stateName}");
-                GUILayout.Label($"Fog Distance: {currentState.meanFreePath}m");
-                GUILayout.Label($"Volumetric Fog: {(currentState.enableVolumetricFog ? "Enabled" : "Disabled")}");
             }
             
             // Transition Status
@@ -186,7 +184,6 @@ public class WeatherDebugUI : MonoBehaviour
                     GUILayout.BeginVertical("box");
                     
                     // State details
-                    GUILayout.Label($"Mean Free Path: {state.meanFreePath}m");
                     GUILayout.Label($"Day Probability: {state.dayTimeProbability:P0}");
                     GUILayout.Label($"Night Probability: {state.nightTimeProbability:P0}");
                     
