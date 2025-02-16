@@ -23,51 +23,65 @@ public class WeatherStateComponentData
         // Create Fog Component Data
         var fogData = new FogComponentData
         {
-            enabled = state.enableVolumetricFog,
-            meanFreePath = state.meanFreePath,
-            baseHeight = state.baseHeight,
-            maximumHeight = state.maximumHeight,
-            albedo = state.albedo,
-            mipFogNear = state.mipFogNear,
-            mipFogFar = state.mipFogFar,
-            mipFogMaxMip = state.mipFogMaxMip,
-            globalLightProbeDimmer = state.globalLightProbeDimmer,
-            depthExtent = state.depthExtent,
-            sliceDistributionUniformity = state.sliceDistributionUniformity,
-            volumetricFogBudget = state.volumetricFogBudget,
-            resolutionDepthRatio = state.resolutionDepthRatio,
-            directionalLightsOnly = state.directionalLightsOnly,
-            anisotropy = state.anisotropy,
-            multiScattering = state.multiScattering
+            enabled = state.fog.enableVolumetricFog,
+            meanFreePath = state.fog.meanFreePath,
+            baseHeight = state.fog.baseHeight,
+            maximumHeight = state.fog.maximumHeight,
+            albedo = state.fog.albedo,
+            mipFogNear = state.fog.mipFogNear,
+            mipFogFar = state.fog.mipFogFar,
+            mipFogMaxMip = state.fog.mipFogMaxMip,
+            globalLightProbeDimmer = state.fog.globalLightProbeDimmer,
+            depthExtent = state.fog.depthExtent,
+            sliceDistributionUniformity = state.fog.sliceDistributionUniformity,
+            volumetricFogBudget = state.fog.volumetricFogBudget,
+            resolutionDepthRatio = state.fog.resolutionDepthRatio,
+            directionalLightsOnly = state.fog.directionalLightsOnly,
+            anisotropy = state.fog.anisotropy,
+            multiScattering = state.fog.multiScattering
         };
         componentData.SetComponentData(typeof(FogComponent), fogData);
 
         // Create Cloud Component Data
         var cloudData = new CloudComponentData
         {
-            enabled = state.enableClouds,
-            opacity = state.opacity,
-            upperHemisphereOnly = state.upperHemisphereOnly,
-            altitude = state.altitude,
-            rotation = state.rotation,
-            tint = state.cloudTint,
-            exposureCompensation = state.exposureCompensation,
-            opacityR = state.opacityR,
-            opacityG = state.opacityG,
-            opacityB = state.opacityB,
-            opacityA = state.opacityA,
-            windOrientation = state.windOrientation,
-            windSpeed = state.windSpeed,
-            enableRaymarching = state.enableRaymarching,
-            numPrimarySteps = state.numPrimarySteps,
-            raymarchingDensity = state.raymarchingDensity,
-            ambientDimmer = state.ambientDimmer,
-            enableShadows = state.enableShadows,
-            shadowMultiplier = state.shadowMultiplier,
-            shadowTint = state.shadowTint,
-            shadowResolution = state.shadowResolution
+            enabled = state.clouds.enableClouds,
+            opacity = state.clouds.opacity,
+            upperHemisphereOnly = state.clouds.upperHemisphereOnly,
+            altitude = state.clouds.altitude,
+            rotation = state.clouds.rotation,
+            tint = state.clouds.cloudTint,
+            exposureCompensation = state.clouds.exposureCompensation,
+            opacityR = state.clouds.opacityR,
+            opacityG = state.clouds.opacityG,
+            opacityB = state.clouds.opacityB,
+            opacityA = state.clouds.opacityA,
+            windOrientation = state.clouds.windOrientation,
+            windSpeed = state.clouds.windSpeed,
+            enableRaymarching = state.clouds.enableRaymarching,
+            numPrimarySteps = state.clouds.numPrimarySteps,
+            raymarchingDensity = state.clouds.raymarchingDensity,
+            ambientDimmer = state.clouds.ambientDimmer,
+            enableShadows = state.clouds.enableShadows,
+            shadowMultiplier = state.clouds.shadowMultiplier,
+            shadowTint = state.clouds.shadowTint,
+            shadowResolution = state.clouds.shadowResolution
         };
         componentData.SetComponentData(typeof(CloudComponent), cloudData);
+
+        var rainData = new RainComponentData
+        {
+            enabled = state.rain.enableRain,
+            intensity = state.rain.intensity,
+            dropSize = state.rain.dropSize,
+            fallSpeed = state.rain.fallSpeed,
+            emissionRadius = state.rain.emissionRadius,
+            emissionHeight = state.rain.emissionHeight,
+            rainColor = state.rain.rainColor,
+            rainAlpha = state.rain.rainAlpha,
+            soundVolume = state.rain.soundVolume
+        };
+        componentData.SetComponentData(typeof(RainComponent), rainData);
 
         return componentData;
     }

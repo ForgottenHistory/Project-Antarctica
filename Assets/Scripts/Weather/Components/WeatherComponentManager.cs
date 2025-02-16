@@ -13,6 +13,7 @@ public class WeatherComponentManager : MonoBehaviour
         this.volumeProfile = profile;
         RegisterComponent<FogComponent>();
         RegisterComponent<CloudComponent>();
+        RegisterComponent<RainComponent>();
     }
 
     private void RegisterComponent<T>() where T : IWeatherComponent, new()
