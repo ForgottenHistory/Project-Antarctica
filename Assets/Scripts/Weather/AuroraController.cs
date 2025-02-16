@@ -58,9 +58,6 @@ public class AuroraController : MonoBehaviour
         // Check if we're in the dark period (between darkStartAngle and darkEndAngle)
         bool isInDarkPeriod = sunAngle >= darkStartAngle && sunAngle <= darkEndAngle;
         
-        Debug.Log($"Sun Angle: {sunAngle:F2}, Dark Period: {isInDarkPeriod}, " +
-                  $"Start: {darkStartAngle}, End: {darkEndAngle}");
-
         if (isInDarkPeriod)
         {
             // Calculate transition near start of dark period
